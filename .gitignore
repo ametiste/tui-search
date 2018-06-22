@@ -23,9 +23,6 @@ release.properties
 .gradle
 build
 
-### JRebel
-rebel.xml
-
 ### Other
 .cache
 .tmp
