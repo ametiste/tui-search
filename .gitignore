@@ -4,6 +4,7 @@
 .settings/
 .worksheet/
 bin/
+out
 
 ### IDEA
 *.iml
