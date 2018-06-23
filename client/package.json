@@ -21,8 +21,9 @@
     "@types/jest": "^23.1.1",
     "@types/node": "^10.3.4",
     "@types/react": "^16.4.1",
+    "@types/react-bootstrap": "^0.32.10",
+    "@types/react-bootstrap-table-next": "0.1.13",
     "@types/react-dom": "^16.0.6",
-    "@types/react-bootstrap-table-next" : "0.1.13",
     "typescript": "^2.9.2"
   }
 }

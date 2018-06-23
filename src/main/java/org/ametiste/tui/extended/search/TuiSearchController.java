@@ -52,7 +52,7 @@ public class TuiSearchController {
             combinedResult.addAll(searcher.hotelsPerPage(uri, i, keywords));
         }
 
-        return new HotelSearchResult(combinedResult.size(), combinedResult);
+        return new HotelSearchResult(combinedResult.size(), lastExistingPage, combinedResult);
     }
 
     private String build(Optional<String> country) {

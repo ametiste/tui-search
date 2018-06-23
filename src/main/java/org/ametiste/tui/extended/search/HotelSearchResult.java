@@ -8,5 +8,6 @@ import java.util.List;
 public class HotelSearchResult {
 
     private Integer totalCount;
+    private Integer totalPages;
     private List<HotelInfo> results;
 }
