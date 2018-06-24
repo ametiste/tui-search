@@ -24,7 +24,6 @@ interface AppState {
 }
 
 class App extends React.Component<AppProps, AppState> {
-
     constructor(props: AppProps) {
         super(props);
 
@@ -32,21 +31,53 @@ class App extends React.Component<AppProps, AppState> {
             hotels: [],
             total: 0,
             totalPages: 1,
-            isLoading: false
+            isLoading: true
         };
+        this.loadHotelsFromPage = this.loadHotelsFromPage.bind(this);
         this.loadHotels = this.loadHotels.bind(this);
+        this.stopLoad = this.stopLoad.bind(this);
+
     }
 
-    loadHotels() {
-        const {totalPages} = this.state;
-        console.log(totalPages);
+    loadHotels(this: any) {
+        this.setState({
+            isLoading: true
+        });
+        this.loadHotelsFromPage();
+    }
+
+    stopLoad() {
+        this.setState({
+            isLoading: false
+        });
+    }
+
+    loadHotelsFromPage() {
+        if (!this.state.isLoading) {
+            console.log(this.state);
+            return;
+        }
         fetch('http://localhost:8080/?from=' + this.state.totalPages +
             '&to=' + this.state.totalPages)
             .then(response => response.json())
-            .then(data => this.setState({
-                hotels: data.results,
-                total: data.totalCount
-            }));
+            .then(data => {
+                console.log(data.totalPages);
+                console.log(this.state.totalPages);
+                if (data.totalPages >= this.state.totalPages) {
+                    this.setState({
+                        totalPages: this.state.totalPages + 1
+                    });
+                    this.loadHotelsFromPage();
+                } else {
+                    this.setState({
+                        isLoading: false
+                    });
+                }
+                this.setState({
+                    hotels: this.state.hotels.concat(data.results),
+                    total: this.state.total + data.totalCount,
+                });
+            });
     }
 
     render() {
@@ -75,8 +106,6 @@ class App extends React.Component<AppProps, AppState> {
             formatter: priceFormatter,
             sort: true
         }];
-
-        console.log(this.state.totalPages);
         return (
             <div className="App">
                 <header className="App-header">
@@ -85,6 +114,7 @@ class App extends React.Component<AppProps, AppState> {
                 </header>
                 <div>
                     <ReactBootstrap.Button onClick={this.loadHotels}>Search for hotels</ReactBootstrap.Button>
+                    <ReactBootstrap.Button onClick={this.stopLoad}>X</ReactBootstrap.Button>
                     <h2>Hotels found, total: {total}</h2>
                     <BootstrapTable keyField="uri" data={hotels} columns={columns}/>
                 </div>
